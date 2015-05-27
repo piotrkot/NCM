@@ -134,6 +134,27 @@ public final class SentenceTransformTest {
             out.toString()
         );
     }
+    /**
+     * Can convert sentence with special chars.
+     * @throws Exception If fails.
+     */
+    @Test
+    public void convertSentenceWithSpecChars() throws Exception {
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        new SentenceTransform<>(
+            new TestTextFormat(HEAD, FOOT),
+            new SentenceStream(out)
+        ).convert(
+            new ByteArrayInputStream(
+                "ściółka śpi\n ze źdźbła".getBytes(Charsets.UTF_8)
+            )
+        );
+        Assert.assertEquals(
+            "not converted with spec chars",
+            Joiner.on(this.nline).join(HEAD, "ściółka śpi ze źdźbła", FOOT, ""),
+            out.toString()
+        );
+    }
     class TestTextFormat implements TextFormat<String> {
         /**
          * Header.
