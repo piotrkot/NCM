@@ -4,7 +4,7 @@
 package com.piokot.ncm;
 
 /**
- * Convertion application.
+ * Conversion application.
  *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$

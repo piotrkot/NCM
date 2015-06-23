@@ -10,7 +10,7 @@ import java.io.OutputStream;
 import lombok.SneakyThrows;
 
 /**
- * Output stream that handles string sentenced.
+ * Output stream that handles string sentences.
  *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
