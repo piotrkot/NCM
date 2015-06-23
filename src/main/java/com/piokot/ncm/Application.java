@@ -24,10 +24,9 @@ public final class Application {
      */
     public static void main(final String[] args) {
         new Commands(
-            args,
             new XMLCommand(System.in, System.out),
             new CSVCommand(System.in, System.out),
             new HELPCommand()
-        ).dispatch();
+        ).dispatch(args);
     }
 }

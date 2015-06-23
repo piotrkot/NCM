@@ -11,13 +11,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Tests for {@link InputStreamSplit} class.
+ * Tests for {@link StreamDrop} class.
  *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public final class InputStreamSplitTest {
+public final class StreamDropTest {
     /**
      * Can return stream copy.
      *
@@ -26,18 +26,18 @@ public final class InputStreamSplitTest {
     @Test
     public void returnStreamCopy() throws Exception {
         final String content = "hello world";
-        final InputStreamSplit split = new InputStreamSplit(
+        final StreamDrop split = new StreamDrop(
             new ByteArrayInputStream(content.getBytes(Charsets.UTF_8))
         );
         Assert.assertEquals(
             "first copy same",
             content,
-            CharStreams.toString(new InputStreamReader(split.streamCopy()))
+            CharStreams.toString(new InputStreamReader(split.copy()))
         );
         Assert.assertEquals(
             "second copy same",
             content,
-            CharStreams.toString(new InputStreamReader(split.streamCopy()))
+            CharStreams.toString(new InputStreamReader(split.copy()))
         );
     }
 }

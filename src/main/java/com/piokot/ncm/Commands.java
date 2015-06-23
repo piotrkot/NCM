@@ -24,38 +24,33 @@ public final class Commands {
      */
     private final transient Command[] cmnds;
     /**
-     * Parsed command line arguments with options.
-     */
-    private final transient CommandLine cline;
-
-    /**
      * Class constructor.
      *
-     * @param arguments Command line arguments.
      * @param commands Commands handling arguments.
      */
-    @SneakyThrows
-    public Commands(final String[] arguments, final Command... commands) {
-        log.info("Read args: {}", arguments);
+    public Commands(final Command... commands) {
         this.cmnds = commands;
-        final Options optns = new Options();
-        for (final Command command : this.cmnds) {
-            optns.addOption(command.option());
-        }
-        this.cline = new BasicParser().parse(optns, arguments);
-        log.info("Command line args: {}", this.cline.getArgList());
     }
-
     /**
      * Route commands, find the one which can be run and run it.
      * <p/>
      * It is assured that only one command is run or none if none cannot be run.
      * When more that one command is satisfied, it cannot be determined which
      * one will get executed.
+     *
+     * @param arguments Command line arguments.
      */
-    public void dispatch() {
+    @SneakyThrows
+    public void dispatch(final String... arguments) {
+        log.info("Read args: {}", arguments);
+        final Options optns = new Options();
         for (final Command command : this.cmnds) {
-            if (command.canRun(this.cline)) {
+            optns.addOption(command.option());
+        }
+        final CommandLine cline = new BasicParser().parse(optns, arguments);
+        log.info("Command line args: {}", cline.getArgList());
+        for (final Command command : this.cmnds) {
+            if (command.canRun(cline)) {
                 command.run();
                 break;
             }

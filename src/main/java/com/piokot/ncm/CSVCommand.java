@@ -60,15 +60,15 @@ public final class CSVCommand implements Command {
     @SneakyThrows
     public void run() {
         log.info("Running CSV convert");
-        final InputStreamSplit split = new InputStreamSplit(this.istrm);
+        final StreamDrop split = new StreamDrop(this.istrm);
         final MaxNumberStream numerics = new MaxNumberStream();
         new SentenceTransform<>(new SumFormat(), numerics).convert(
-            split.streamCopy()
+            split.copy()
         );
         new SentenceTransform<>(
             new CSVFormat(numerics.maximum()),
             new SentenceStream(this.ostrm)
-        ).convert(split.streamCopy());
+        ).convert(split.copy());
     }
 
     @Override
