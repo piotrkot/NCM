@@ -4,6 +4,7 @@
 package com.piokot.ncm;
 
 import com.piokot.ncm.api.Command;
+import java.util.Arrays;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.BasicParser;
@@ -29,7 +30,7 @@ public final class Commands {
      * @param commands Commands handling arguments.
      */
     public Commands(final Command... commands) {
-        this.cmnds = commands;
+        this.cmnds = Arrays.copyOf(commands, commands.length);
     }
     /**
      * Route commands, find the one which can be run and run it.
