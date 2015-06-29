@@ -3,9 +3,12 @@
  */
 package com.piokot.ncm;
 
+import com.google.common.base.Joiner;
 import com.piokot.ncm.api.Command;
+import com.piokot.ncm.api.SentenceFormat;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.Iterator;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -28,13 +31,17 @@ public final class XMLCommand implements Command {
      */
     private final transient Option optn;
     /**
-     * Input stream for the command.
+     * Input text.
      */
-    private final transient InputStream istrm;
+    private final transient InputStream input;
     /**
      * Output stream for the command.
      */
-    private final transient OutputStream ostrm;
+    private final transient Appendable output;
+    /**
+     * Output convert.
+     */
+    private final transient SentenceFormat format;
 
     /**
      * Class constructor.
@@ -42,9 +49,10 @@ public final class XMLCommand implements Command {
      * @param istream Input stream.
      * @param ostream Output stream.
      */
-    public XMLCommand(final InputStream istream, final OutputStream ostream) {
-        this.istrm = istream;
-        this.ostrm = ostream;
+    public XMLCommand(final InputStream istream, final Appendable ostream) {
+        this.input = istream;
+        this.format = new XMLSentence();
+        this.output = ostream;
         this.optn = new Option(OPT, false, "output in XML format");
     }
 
@@ -55,11 +63,23 @@ public final class XMLCommand implements Command {
             && cline.hasOption(OPT);
     }
 
+    @SneakyThrows
     @Override
     public void run() {
         log.info("Running XML convert");
-        new SentenceTransform<>(new XMLFormat(), new SentenceStream(this.ostrm))
-            .convert(this.istrm);
+        final Iterator<Sentence> text = new Text(this.input);
+        this.output.append(
+            Joiner.on(System.lineSeparator()).join(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>",
+                "<text>"
+            )
+        );
+        while (text.hasNext()) {
+            this.output.append(System.lineSeparator());
+            this.output.append(this.format.convert(text.next()));
+        }
+        this.output.append(System.lineSeparator());
+        this.output.append("</text>");
     }
 
     @Override

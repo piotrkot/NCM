@@ -11,14 +11,13 @@ import java.io.InputStream;
 import lombok.SneakyThrows;
 
 /**
- * Drop of the input stream. This is made by creating temporal file in
- * the system containing the original stream.
+ * Temporal file of the original input stream content.
  *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public final class StreamDrop {
+public final class TemporalReadable {
     /**
      * Temporal file name.
      */
@@ -34,17 +33,17 @@ public final class StreamDrop {
     /**
      * Class constructor.
      *
-     * @param stream Input stream to be dropped.
+     * @param stream Character stream to be temporarily stored.
      */
     @SneakyThrows
-    public StreamDrop(final InputStream stream) {
+    public TemporalReadable(final InputStream stream) {
         this.temp = File.createTempFile(TEMP_NAME, TEMP_SUFF);
         ByteStreams.copy(stream, new FileOutputStream(this.temp));
     }
     /**
-     * Copy of input stream.
+     * Copy of original content.
      *
-     * @return New instance of input stream.
+     * @return New instance of original stream.
      */
     @SneakyThrows
     public InputStream copy() {

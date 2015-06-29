@@ -3,9 +3,11 @@
  */
 package com.piokot.ncm;
 
+import com.google.common.collect.Lists;
 import com.piokot.ncm.api.Command;
+import com.piokot.ncm.api.SentenceFormat;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.Iterator;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
@@ -29,13 +31,17 @@ public final class CSVCommand implements Command {
      */
     private final transient Option optn;
     /**
-     * Input stream for the command.
-     */
-    private final transient InputStream istrm;
-    /**
      * Output stream for the command.
      */
-    private final transient OutputStream ostrm;
+    private final transient Appendable output;
+    /**
+     * Output convert.
+     */
+    private final transient SentenceFormat format;
+    /**
+     * Temporal readable content.
+     */
+    private final transient TemporalReadable temp;
 
     /**
      * Class constructor.
@@ -43,9 +49,10 @@ public final class CSVCommand implements Command {
      * @param istream Input stream.
      * @param ostream Output stream.
      */
-    public CSVCommand(final InputStream istream, final OutputStream ostream) {
-        this.istrm = istream;
-        this.ostrm = ostream;
+    public CSVCommand(final InputStream istream, final Appendable ostream) {
+        this.temp = new TemporalReadable(istream);
+        this.format = new CSVSentence();
+        this.output = ostream;
         this.optn = new Option(OPT, false, "output in CSV format");
     }
 
@@ -60,19 +67,48 @@ public final class CSVCommand implements Command {
     @SneakyThrows
     public void run() {
         log.info("Running CSV convert");
-        final StreamDrop split = new StreamDrop(this.istrm);
-        final MaxNumberStream numerics = new MaxNumberStream();
-        new SentenceTransform<>(new SumFormat(), numerics).convert(
-            split.copy()
-        );
-        new SentenceTransform<>(
-            new CSVFormat(numerics.maximum()),
-            new SentenceStream(this.ostrm)
-        ).convert(split.copy());
+        this.output.append(this.header());
+        final Iterator<Sentence> text = new Text(this.temp.copy());
+        while (text.hasNext()) {
+            this.output.append(System.lineSeparator());
+            this.output.append(this.format.convert(text.next()));
+        }
     }
 
     @Override
     public Option option() {
         return this.optn;
+    }
+
+    /**
+     * Count of words comma separated. Number of words is of the sentence with
+     * maximum words. For example for content "hello world. Bye."
+     * header is ", Word 1, Word 2".
+     *
+     * @return Header in the CSV format.
+     */
+    public String header() {
+        final SentenceFormat count = new SentenceFormat() {
+            @Override
+            public String convert(final Sentence sentence) {
+                return String.valueOf(
+                    Lists.newArrayList(sentence.words()).size()
+                );
+            }
+        };
+        final Iterator<Sentence> text = new Text(this.temp.copy());
+        int max = 0;
+        while (text.hasNext()) {
+            final int sum = Integer.parseInt(count.convert(text.next()));
+            if (sum > max) {
+                max = sum;
+            }
+        }
+        final StringBuilder head = new StringBuilder(0);
+        //@checkstyle IllegalTokenCheck (1 line)
+        for (int ind = 0; ind < max; ind++) {
+            head.append(", Word ").append(ind + 1);
+        }
+        return head.toString();
     }
 }

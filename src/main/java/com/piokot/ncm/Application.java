@@ -17,6 +17,7 @@ public final class Application {
     private Application() {
         // intentionally empty
     }
+
     /**
      * Main application point.
      *

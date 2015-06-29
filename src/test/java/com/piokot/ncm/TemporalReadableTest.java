@@ -11,13 +11,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Tests for {@link StreamDrop} class.
+ * Tests for {@link TemporalReadable} class.
  *
  * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
-public final class StreamDropTest {
+public final class TemporalReadableTest {
     /**
      * Can return stream copy.
      *
@@ -26,7 +26,7 @@ public final class StreamDropTest {
     @Test
     public void returnStreamCopy() throws Exception {
         final String content = "hello world";
-        final StreamDrop split = new StreamDrop(
+        final TemporalReadable split = new TemporalReadable(
             new ByteArrayInputStream(content.getBytes(Charsets.UTF_8))
         );
         Assert.assertEquals(

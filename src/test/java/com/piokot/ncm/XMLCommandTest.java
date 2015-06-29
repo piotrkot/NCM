@@ -6,9 +6,7 @@ package com.piokot.ncm;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
@@ -32,7 +30,7 @@ public final class XMLCommandTest {
     public void runWithArg() throws Exception {
         final XMLCommand xml = new XMLCommand(
             new ByteArrayInputStream("hello".getBytes(Charsets.UTF_8)),
-            new FileOutputStream(File.createTempFile("temp", "txt"))
+            new PrintWriter(System.out)
         );
         final CommandLine cline = new BasicParser().parse(
             new Options().addOption(xml.option()),
@@ -48,24 +46,22 @@ public final class XMLCommandTest {
      */
     @Test
     public void convertIntoXML() throws Exception {
-        final ByteArrayOutputStream ostream = new ByteArrayOutputStream();
-        final XMLCommand xml = new XMLCommand(
+        final StringBuilder output = new StringBuilder(0);
+        new XMLCommand(
             new ByteArrayInputStream("content".getBytes(Charsets.UTF_8)),
-            ostream
-        );
-        xml.run();
+            output
+        ).run();
         Assert.assertEquals(
             "wrong XML output",
-            Joiner.on(System.getProperty("line.separator")).join(
+            Joiner.on(System.lineSeparator()).join(
                 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>",
                 "<text>",
                 "<sentence>",
                 "<word>content</word>",
                 "</sentence>",
-                "</text>",
-                ""
+                "</text>"
             ),
-            ostream.toString()
+            output.toString()
         );
     }
 }

@@ -27,6 +27,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>3.5.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.7</version>
