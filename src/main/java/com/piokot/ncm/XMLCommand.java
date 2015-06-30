@@ -6,7 +6,6 @@ package com.piokot.ncm;
 import com.google.common.base.Joiner;
 import com.piokot.ncm.api.Command;
 import com.piokot.ncm.api.SentenceFormat;
-import java.io.InputStream;
 import java.util.Iterator;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +30,9 @@ public final class XMLCommand implements Command {
      */
     private final transient Option optn;
     /**
-     * Input text.
+     * Input stream cache.
      */
-    private final transient InputStream input;
+    private final transient InputStreamCache icache;
     /**
      * Output stream for the command.
      */
@@ -46,11 +45,11 @@ public final class XMLCommand implements Command {
     /**
      * Class constructor.
      *
-     * @param istream Input stream.
+     * @param input Input stream cache.
      * @param ostream Output stream.
      */
-    public XMLCommand(final InputStream istream, final Appendable ostream) {
-        this.input = istream;
+    public XMLCommand(final InputStreamCache input, final Appendable ostream) {
+        this.icache = input;
         this.format = new XMLSentence();
         this.output = ostream;
         this.optn = new Option(OPT, false, "output in XML format");
@@ -67,7 +66,7 @@ public final class XMLCommand implements Command {
     @Override
     public void run() {
         log.info("Running XML convert");
-        final Iterator<Sentence> text = new Text(this.input);
+        final Iterator<Sentence> text = new Text(this.icache.reader());
         this.output.append(
             Joiner.on(System.lineSeparator()).join(
                 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>",

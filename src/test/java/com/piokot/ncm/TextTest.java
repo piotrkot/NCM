@@ -3,8 +3,7 @@
  */
 package com.piokot.ncm;
 
-import com.google.common.base.Charsets;
-import java.io.ByteArrayInputStream;
+import java.io.StringReader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.junit.Assert;
@@ -25,8 +24,7 @@ public final class TextTest {
      */
     @Test(expected = UnsupportedOperationException.class)
     public void removeSentence() throws Exception {
-        new Text(new ByteArrayInputStream("to remove".getBytes(Charsets.UTF_8)))
-            .remove();
+        new Text(new StringReader("to remove")).remove();
     }
 
     /**
@@ -36,9 +34,8 @@ public final class TextTest {
      */
     @Test(expected = NoSuchElementException.class)
     public void iterateOverSentences() throws Exception {
-        final Iterator<Sentence> text = new Text(
-            new ByteArrayInputStream("One Sentence.".getBytes(Charsets.UTF_8))
-        );
+        final Iterator<Sentence> text =
+            new Text(new StringReader("One Sentence."));
         Assert.assertTrue("Has one sentence", text.hasNext());
         Assert.assertNotNull("Not null sentence", text.next());
         Assert.assertFalse("Has no more", text.hasNext());

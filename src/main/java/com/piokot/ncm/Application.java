@@ -23,10 +23,11 @@ public final class Application {
      *
      * @param args Command line arguments.
      */
-    public static void main(final String[] args) {
+    public static void main(final String... args) {
+        final InputStreamCache input = new InputStreamCache(System.in);
         new Commands(
-            new XMLCommand(System.in, System.out),
-            new CSVCommand(System.in, System.out),
+            new XMLCommand(input, System.out),
+            new CSVCommand(input, System.out),
             new HELPCommand()
         ).dispatch(args);
     }

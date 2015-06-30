@@ -46,7 +46,7 @@ public final class HELPCommand implements Command {
     public void run() {
         new HelpFormatter().printHelp(
             "java -jar target/ncm-task-1.0-SNAPSHOT.jar [-x] [-c] < input",
-            Joiner.on('\n')
+            Joiner.on(System.lineSeparator())
                 .join(
                     "",
                     "Converts character stream with UTF_8 charset",

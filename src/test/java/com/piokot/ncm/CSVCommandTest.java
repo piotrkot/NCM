@@ -29,7 +29,9 @@ public final class CSVCommandTest {
     @Test
     public void runWithArg() throws Exception {
         final CSVCommand csv = new CSVCommand(
-            new ByteArrayInputStream("".getBytes(Charsets.UTF_8)),
+            new InputStreamCache(
+                new ByteArrayInputStream("".getBytes(Charsets.UTF_8))
+            ),
             new PrintWriter(System.out)
         );
         final CommandLine cline = new BasicParser().parse(
@@ -50,8 +52,10 @@ public final class CSVCommandTest {
             "invalid header",
             ", Word 1, Word 2, Word 3",
             new CSVCommand(
-                new ByteArrayInputStream(
-                    "hello world. Hi my friend".getBytes(Charsets.UTF_8)
+                new InputStreamCache(
+                    new ByteArrayInputStream(
+                        "hello world. Hi my friend".getBytes(Charsets.UTF_8)
+                    )
                 ),
                 new PrintWriter(System.out)
             ).header()
@@ -67,8 +71,10 @@ public final class CSVCommandTest {
     public void convertIntoCSV() throws Exception {
         final StringBuilder output = new StringBuilder(0);
         new CSVCommand(
-            new ByteArrayInputStream(
-                "First? No, second".getBytes(Charsets.UTF_8)
+            new InputStreamCache(
+                new ByteArrayInputStream(
+                    "First? No, second".getBytes(Charsets.UTF_8)
+                )
             ),
             output
         ).run();

@@ -5,9 +5,7 @@ package com.piokot.ncm;
 
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,12 +37,10 @@ public final class Text implements Iterator<Sentence> {
     /**
      * Class constructor.
      *
-     * @param stream Input char stream.
+     * @param reader Input reader.
      */
-    public Text(final InputStream stream) {
-        this.document = new DocumentPreprocessor(
-            new BufferedReader(new InputStreamReader(stream))
-        ).iterator();
+    public Text(final Reader reader) {
+        this.document = new DocumentPreprocessor(reader).iterator();
         this.nwords = Pattern.compile("\\p{Punct}");
     }
 

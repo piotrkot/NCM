@@ -6,7 +6,6 @@ package com.piokot.ncm;
 import com.google.common.collect.Lists;
 import com.piokot.ncm.api.Command;
 import com.piokot.ncm.api.SentenceFormat;
-import java.io.InputStream;
 import java.util.Iterator;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -39,18 +38,18 @@ public final class CSVCommand implements Command {
      */
     private final transient SentenceFormat format;
     /**
-     * Temporal readable content.
+     * Input stream cache.
      */
-    private final transient TemporalReadable temp;
+    private final transient InputStreamCache icache;
 
     /**
      * Class constructor.
      *
-     * @param istream Input stream.
+     * @param input Input stream cache.
      * @param ostream Output stream.
      */
-    public CSVCommand(final InputStream istream, final Appendable ostream) {
-        this.temp = new TemporalReadable(istream);
+    public CSVCommand(final InputStreamCache input, final Appendable ostream) {
+        this.icache = input;
         this.format = new CSVSentence();
         this.output = ostream;
         this.optn = new Option(OPT, false, "output in CSV format");
@@ -68,7 +67,7 @@ public final class CSVCommand implements Command {
     public void run() {
         log.info("Running CSV convert");
         this.output.append(this.header());
-        final Iterator<Sentence> text = new Text(this.temp.copy());
+        final Iterator<Sentence> text = new Text(this.icache.reader());
         while (text.hasNext()) {
             this.output.append(System.lineSeparator());
             this.output.append(this.format.convert(text.next()));
@@ -96,7 +95,7 @@ public final class CSVCommand implements Command {
                 );
             }
         };
-        final Iterator<Sentence> text = new Text(this.temp.copy());
+        final Iterator<Sentence> text = new Text(this.icache.reader());
         int max = 0;
         while (text.hasNext()) {
             final int sum = Integer.parseInt(count.convert(text.next()));

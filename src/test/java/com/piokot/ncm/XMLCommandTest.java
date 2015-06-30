@@ -29,7 +29,9 @@ public final class XMLCommandTest {
     @Test
     public void runWithArg() throws Exception {
         final XMLCommand xml = new XMLCommand(
-            new ByteArrayInputStream("hello".getBytes(Charsets.UTF_8)),
+            new InputStreamCache(
+                new ByteArrayInputStream("hello".getBytes(Charsets.UTF_8))
+            ),
             new PrintWriter(System.out)
         );
         final CommandLine cline = new BasicParser().parse(
@@ -48,7 +50,11 @@ public final class XMLCommandTest {
     public void convertIntoXML() throws Exception {
         final StringBuilder output = new StringBuilder(0);
         new XMLCommand(
-            new ByteArrayInputStream("content".getBytes(Charsets.UTF_8)),
+            new InputStreamCache(
+                new ByteArrayInputStream(
+                    "content".getBytes(Charsets.UTF_8)
+                )
+            ),
             output
         ).run();
         Assert.assertEquals(
