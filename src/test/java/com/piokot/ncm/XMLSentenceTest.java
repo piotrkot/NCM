@@ -6,6 +6,7 @@ package com.piokot.ncm;
 import com.google.common.base.Joiner;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.ling.Word;
+import java.text.Collator;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 import org.junit.Assert;
@@ -35,7 +36,7 @@ public final class XMLSentenceTest {
                 "<word>zero</word>",
                 "</sentence>"
             ),
-            new XMLSentence().convert(
+            new XMLSentence(Collator.getInstance()).convert(
                 new Sentence(
                     Arrays.<HasWord>asList(
                         new Word("zero"),

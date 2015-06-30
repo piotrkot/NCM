@@ -8,6 +8,7 @@ import com.google.common.base.Joiner;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Locale;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,6 +67,7 @@ public final class ApplicationTest {
      */
     @Test
     public void outputCSV() throws Exception {
+        //@checkstyle MultipleStringLiterals (1 line)
         Application.main("-c");
         Assert.assertEquals(
             "CSV content not same",
@@ -100,6 +102,27 @@ public final class ApplicationTest {
                 "-h this help is displayed.",
                 "",
                 ""
+            ),
+            this.out.toString()
+        );
+    }
+    /**
+     * Can output correct CSV document with PL locale.
+     *
+     * @throws Exception If it fails.
+     */
+    @Test
+    public void outputLocaleCSV() throws Exception {
+        System.setIn(
+            new ByteArrayInputStream("moo łoo".getBytes(Charsets.UTF_8))
+        );
+        Locale.setDefault(Locale.forLanguageTag("PL"));
+        Application.main("-c");
+        Assert.assertEquals(
+            "CSV locale content not same",
+            Joiner.on(System.lineSeparator()).join(
+                ", Word 1, Word 2",
+                "Sentence 1, łoo, moo"
             ),
             this.out.toString()
         );

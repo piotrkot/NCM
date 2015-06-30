@@ -39,7 +39,9 @@ put into output stream. Again, may not be possible.
 
 * "the words have to be sorted"
 Although there is an example for sorting, it is not explicitly defined.
-I assume it is natural ordering with case insensitive order.
+For that a collator is used with default locale. When one wants to change
+sorting according to different locale it is required to provide it with
+`-Duser.language` system property.
 
 * "broken into sentences"
 It is not explicitly defined how sentence split should be performed. Thus,

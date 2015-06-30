@@ -6,7 +6,9 @@ package com.piokot.ncm;
 import com.google.common.base.Joiner;
 import com.piokot.ncm.api.Command;
 import com.piokot.ncm.api.SentenceFormat;
+import java.text.Collator;
 import java.util.Iterator;
+import java.util.Locale;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
@@ -50,7 +52,8 @@ public final class XMLCommand implements Command {
      */
     public XMLCommand(final InputStreamCache input, final Appendable ostream) {
         this.icache = input;
-        this.format = new XMLSentence();
+        this.format =
+            new XMLSentence(Collator.getInstance(Locale.getDefault()));
         this.output = ostream;
         this.optn = new Option(OPT, false, "output in XML format");
     }

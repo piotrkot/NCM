@@ -5,6 +5,7 @@ package com.piokot.ncm;
 
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.ling.Word;
+import java.text.Collator;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 import org.junit.Assert;
@@ -28,7 +29,7 @@ public final class CSVSentenceTest {
         Assert.assertEquals(
             "not sorted",
             "Sentence 1, abba, Big, zero",
-            new CSVSentence().convert(
+            new CSVSentence(Collator.getInstance()).convert(
                 new Sentence(
                     Arrays.<HasWord>asList(
                         new Word("zero"),
