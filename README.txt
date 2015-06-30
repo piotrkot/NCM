@@ -42,11 +42,10 @@ Although there is an example for sorting, it is not explicitly defined.
 I assume it is natural ordering with case insensitive order.
 
 * "broken into sentences"
-It is not explicitly defined if every sentence must end with a dot,
-and if the last sentence may not have a dot. Provided example confirms that.
-However, question mark or exclamation mark or even semicolon can mark end
-of the sentence as well. Here, as not specified I assumed only dot is a valid
-sentence end character.
+It is not explicitly defined how sentence split should be performed. Thus,
+it was assumed
+[`Stanford Core NLP`](http://nlp.stanford.edu/software/corenlp.shtml) tools
+should suffice.
 
 * "wiring"
 Personally (as suggested with "Feel free" phrase), I did not find useful
