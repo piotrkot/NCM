@@ -1,12 +1,12 @@
 How to build
 
-`$ mvn clean package -Pqulice`
+$ mvn clean package -Pqulice
 Special quality policy is applied as a static code analysis. See:
-`http://www.qulice.com/` for details.
+http://www.qulice.com/ for details.
 
 How to run
 
-`$ java -jar target/ncm-task-1.0-SNAPSHOT.jar [-c] [-x] < input`
+$ java -jar target/ncm-task-1.0-SNAPSHOT.jar [-c] [-x] < input
 When running inappropriately help message is displayed.
 
 Technical decisions
@@ -46,7 +46,7 @@ sorting according to different locale it is required to provide it with
 * "broken into sentences"
 It is not explicitly defined how sentence split should be performed. Thus,
 it was assumed
-[`Stanford Core NLP`](http://nlp.stanford.edu/software/corenlp.shtml) tools
+[Stanford Core NLP](http://nlp.stanford.edu/software/corenlp.shtml) tools
 should suffice.
 
 * "wiring"
