@@ -16,7 +16,7 @@ import org.junit.Test;
 /**
  * Tests for {@link Application} class.
  *
- * @author Piotr Kotlicki (piotr.kotlicki@lhsystems.com)
+ * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */

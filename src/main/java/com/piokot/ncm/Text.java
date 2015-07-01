@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  * only once. Sentences and words are extracted with Stanford Natural Language
  * Processing library. Punctuations are not treated as valid words.
  *
- * @author Piotr Kotlicki (piotr.kotlicki@lhsystems.com)
+ * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */

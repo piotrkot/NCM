@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * Single sentence of text.
  *
- * @author Piotr Kotlicki (piotr.kotlicki@lhsystems.com)
+ * @author Piotr Kotlicki (piotr.kotlicki@gmail.com)
  * @version $Id$
  * @since 1.0
  */
