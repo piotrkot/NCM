@@ -36,9 +36,8 @@ public final class HELPCommand implements Command {
 
     @Override
     public boolean canRun(final CommandLine cline) {
-        return cline.getOptions().length > 1
-            || cline.hasOption(OPT)
-            || cline.getOptions().length == 0
+        return cline.hasOption(OPT)
+            || cline.getOptions().length != 1
             || !cline.getArgList().isEmpty();
     }
 

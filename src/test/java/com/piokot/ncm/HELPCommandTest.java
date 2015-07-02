@@ -19,32 +19,40 @@ import org.junit.Test;
  */
 public final class HELPCommandTest {
     /**
-     * Can run if one argument given.
+     * Can run if one argument given and an other option.
      *
      * @throws Exception If fails
      */
     @Test
-    public void testCanRunWithOneArg() throws Exception {
+    public void testCanRunWithOneArgOneOption() throws Exception {
         final HELPCommand help = new HELPCommand();
+        final Option ocase = new Option("o", false, "o case");
         final CommandLine cline = new BasicParser().parse(
-            new Options().addOption(help.option()),
-            new String[]{"asd"}
+            new Options().addOption(ocase), new String[]{"asd", "-o"}
         );
-        Assert.assertTrue("not called with one arg", help.canRun(cline));
+        Assert.assertTrue(
+            "not called with one arg and option",
+            help.canRun(cline)
+        );
     }
     /**
-     * Can run if no arg given.
+     * Can run if for two options given and no args.
      *
      * @throws Exception If fails
      */
     @Test
-    public void testCanRunWithNoArgs() throws Exception {
+    public void testCanRunWithTwoOptionsNoArgs() throws Exception {
         final HELPCommand help = new HELPCommand();
+        final Option ccase = new Option("c", false, "c case");
+        final Option xcase = new Option("x", false, "x case");
         final CommandLine cline = new BasicParser().parse(
-            new Options().addOption(help.option()),
-            new String[]{""}
+            new Options().addOption(ccase).addOption(xcase),
+            new String[]{"-c", "-x"}
         );
-        Assert.assertTrue("not called with no args", help.canRun(cline));
+        Assert.assertTrue(
+            "not called with two options and no args",
+            help.canRun(cline)
+        );
     }
     /**
      * Can run if help option given.
@@ -54,41 +62,25 @@ public final class HELPCommandTest {
     @Test
     public void testCanRunWithHelpOption() throws Exception {
         final HELPCommand help = new HELPCommand();
-        //@checkstyle MultipleStringLiteralsCheck (3 lines)
         final CommandLine cline = new BasicParser().parse(
-            new Options().addOption(help.option()),
-            new String[]{"-h"}
+            new Options().addOption(help.option()), new String[]{"-h"}
         );
         Assert.assertTrue("not called with help option", help.canRun(cline));
     }
     /**
-     * Can run if more options given.
+     * Can run if no options nor arguments given.
      *
      * @throws Exception If fails
      */
     @Test
-    public void testCanRunWithMoreOptions() throws Exception {
+    public void testCanRunWithNoOptionsNorArgs() throws Exception {
         final HELPCommand help = new HELPCommand();
-        final Option other = new Option("o", false, "other");
         final CommandLine cline = new BasicParser().parse(
-            new Options().addOption(help.option()).addOption(other),
-            new String[]{"-h", "-o"}
+            new Options(), new String[]{""}
         );
-        Assert.assertTrue("not called with more options", help.canRun(cline));
-    }
-    /**
-     * Can run if option and argument given.
-     *
-     * @throws Exception If fails
-     */
-    @Test
-    public void testCanRunWithOptionAndArg() throws Exception {
-        final HELPCommand help = new HELPCommand();
-        final Option other = new Option("u", false, "another");
-        final CommandLine cline = new BasicParser().parse(
-            new Options().addOption(help.option()).addOption(other),
-            new String[]{"-u", "arg"}
+        Assert.assertTrue(
+            "not called with no options nor arguments",
+            help.canRun(cline)
         );
-        Assert.assertTrue("not called with option and arg", help.canRun(cline));
     }
 }
