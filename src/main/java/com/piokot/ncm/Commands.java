@@ -23,14 +23,14 @@ public final class Commands {
     /**
      * Commands that can handle command line arguments.
      */
-    private final transient Command[] cmnds;
+    private final transient Iterable<Command> cmnds;
     /**
      * Class constructor.
      *
      * @param commands Commands handling arguments.
      */
     public Commands(final Command... commands) {
-        this.cmnds = Arrays.copyOf(commands, commands.length);
+        this.cmnds = Arrays.asList(commands);
     }
     /**
      * Route commands, find the one which can be run and run it.
