@@ -53,7 +53,6 @@ public final class Commands {
         for (final Command command : this.cmnds) {
             if (command.canRun(cline)) {
                 command.run();
-                break;
             }
         }
     }
