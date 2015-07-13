@@ -33,11 +33,9 @@ public final class Commands {
         this.cmnds = Arrays.asList(commands);
     }
     /**
-     * Route commands, find the one which can be run and run it.
+     * Routes commands for the command line arguments.
      * <p/>
-     * It is assured that only one command is run or none if none cannot be run.
-     * When more that one command is satisfied, it cannot be determined which
-     * one will get executed.
+     * All commands that can run for the given arguments get run.
      *
      * @param arguments Command line arguments.
      */
