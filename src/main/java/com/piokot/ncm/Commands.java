@@ -3,13 +3,11 @@
  */
 package com.piokot.ncm;
 
+import com.github.piotrkot.cli.CommandLineArgs;
 import com.piokot.ncm.api.Command;
 import java.util.Arrays;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Options;
 
 /**
  * Commands for the Application.
@@ -42,14 +40,9 @@ public final class Commands {
     @SneakyThrows
     public void dispatch(final String... arguments) {
         log.info("Read args: {}", arguments);
-        final Options optns = new Options();
+        final CommandLineArgs cli = new CommandLineArgs(arguments);
         for (final Command command : this.cmnds) {
-            optns.addOption(command.option());
-        }
-        final CommandLine cline = new BasicParser().parse(optns, arguments);
-        log.info("Command line args: {}", cline.getArgList());
-        for (final Command command : this.cmnds) {
-            if (command.canRun(cline)) {
+            if (command.canRun(cli)) {
                 command.run();
             }
         }

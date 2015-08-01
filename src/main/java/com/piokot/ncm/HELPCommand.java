@@ -3,12 +3,10 @@
  */
 package com.piokot.ncm;
 
+import com.github.piotrkot.cli.CommandLineArgs;
 import com.google.common.base.Joiner;
 import com.piokot.ncm.api.Command;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Command for showing help.
@@ -17,53 +15,31 @@ import org.apache.commons.cli.Options;
  * @version $Id$
  * @since 1.0
  */
+@Slf4j
 public final class HELPCommand implements Command {
-    /**
-     * Option for HELP.
-     */
-    private static final String OPT = "h";
-    /**
-     * Command line option.
-     */
-    private final transient Option optn;
-
-    /**
-     * Class constructor.
-     */
-    public HELPCommand() {
-        this.optn = new Option(OPT, false, "help information");
-    }
 
     @Override
-    public boolean canRun(final CommandLine cline) {
-        return cline.hasOption(OPT)
-            || cline.getOptions().length != 1
-            || !cline.getArgList().isEmpty();
+    public boolean canRun(final CommandLineArgs cli) {
+        return cli.getOptions().size() != 1
+            || cli.findOption("h").iterator().hasNext();
     }
 
+    @SuppressWarnings("PMD.SystemPrintln")
     @Override
     public void run() {
-        new HelpFormatter().printHelp(
-            "java -jar target/ncm-task-1.0-SNAPSHOT.jar [-x] [-c] < input",
-            Joiner.on(System.lineSeparator())
-                .join(
-                    "",
-                    "Converts character stream with UTF_8 charset",
-                    "to sentences with sorted words.",
-                    "Output is put to the stdout.",
-                    "Options:",
-                    "",
-                    "-x output is in XML form",
-                    "-c output is in CSV form",
-                    "-h this help is displayed."
-                ),
-            new Options(),
-            ""
+        // @checkstyle LineLength (3 lines)
+        System.err.println(
+            Joiner.on(System.lineSeparator()).join(
+                "usage: java -jar target/ncm-task-1.0-SNAPSHOT.jar [-x | -c] < input",
+                "",
+                "Converts character stream with UTF_8 charset",
+                "to sentences with sorted words.",
+                "Output is put to the stdout.",
+                "Options:",
+                "-x output is in XML form",
+                "-c output is in CSV form",
+                "-h this help is displayed."
+            )
         );
-    }
-
-    @Override
-    public Option option() {
-        return this.optn;
     }
 }

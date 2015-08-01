@@ -3,8 +3,7 @@
  */
 package com.piokot.ncm.api;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
+import com.github.piotrkot.cli.CommandLineArgs;
 
 /**
  * Command that can be run.
@@ -20,17 +19,10 @@ public interface Command {
      * @param cline Command line.
      * @return True, if can be run. False, otherwise.
      */
-    boolean canRun(CommandLine cline);
+    boolean canRun(CommandLineArgs cline);
 
     /**
      * Run command.
      */
     void run();
-
-    /**
-     * Command line option identifying that command.
-     *
-     * @return Option object.
-     */
-    Option option();
 }

@@ -3,6 +3,7 @@
  */
 package com.piokot.ncm;
 
+import com.github.piotrkot.cli.CommandLineArgs;
 import com.google.common.base.Joiner;
 import com.piokot.ncm.api.Command;
 import com.piokot.ncm.api.SentenceFormat;
@@ -11,8 +12,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
 
 /**
  * Command for executing XML command line option.
@@ -23,14 +22,6 @@ import org.apache.commons.cli.Option;
  */
 @Slf4j
 public final class XMLCommand implements Command {
-    /**
-     * Option for XML output.
-     */
-    private static final String OPT = "x";
-    /**
-     * Command line option.
-     */
-    private final transient Option optn;
     /**
      * Input stream cache.
      */
@@ -55,14 +46,12 @@ public final class XMLCommand implements Command {
         this.format =
             new XMLSentence(Collator.getInstance(Locale.getDefault()));
         this.output = ostream;
-        this.optn = new Option(OPT, false, "output in XML format");
     }
 
     @Override
-    public boolean canRun(final CommandLine cline) {
-        return cline.getArgList().isEmpty()
-            && cline.getOptions().length == 1
-            && cline.hasOption(OPT);
+    public boolean canRun(final CommandLineArgs cli) {
+        return cli.getOptions().size() == 1
+            && cli.findOption("x").iterator().hasNext();
     }
 
     @SneakyThrows
@@ -82,10 +71,5 @@ public final class XMLCommand implements Command {
         }
         this.output.append(System.lineSeparator());
         this.output.append("</text>");
-    }
-
-    @Override
-    public Option option() {
-        return this.optn;
     }
 }

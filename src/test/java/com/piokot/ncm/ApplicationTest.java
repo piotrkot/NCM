@@ -25,6 +25,10 @@ public final class ApplicationTest {
      * Output stream.
      */
     private transient ByteArrayOutputStream out;
+    /**
+     * Error stream.
+     */
+    private transient ByteArrayOutputStream err;
 
     /**
      * Set up for each test.
@@ -35,7 +39,9 @@ public final class ApplicationTest {
             new ByteArrayInputStream("content".getBytes(Charsets.UTF_8))
         );
         this.out = new ByteArrayOutputStream();
+        this.err = new ByteArrayOutputStream();
         System.setOut(new PrintStream(this.out));
+        System.setErr(new PrintStream(this.err));
     }
 
     /**
@@ -91,7 +97,7 @@ public final class ApplicationTest {
         Assert.assertEquals(
             "Help content not same",
             Joiner.on(System.lineSeparator()).join(
-                "usage: java -jar target/ncm-task-1.0-SNAPSHOT.jar [-x] [-c] < input",
+                "usage: java -jar target/ncm-task-1.0-SNAPSHOT.jar [-x | -c] < input",
                 "",
                 "Converts character stream with UTF_8 charset",
                 "to sentences with sorted words.",
@@ -100,10 +106,9 @@ public final class ApplicationTest {
                 "-x output is in XML form",
                 "-c output is in CSV form",
                 "-h this help is displayed.",
-                "",
                 ""
             ),
-            this.out.toString()
+            this.err.toString()
         );
     }
     /**

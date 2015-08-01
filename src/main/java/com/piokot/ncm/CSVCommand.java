@@ -3,6 +3,7 @@
  */
 package com.piokot.ncm;
 
+import com.github.piotrkot.cli.CommandLineArgs;
 import com.google.common.collect.Lists;
 import com.piokot.ncm.api.Command;
 import com.piokot.ncm.api.SentenceFormat;
@@ -11,8 +12,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
 
 /**
  * Command for executing CSV command line option.
@@ -23,14 +22,6 @@ import org.apache.commons.cli.Option;
  */
 @Slf4j
 public final class CSVCommand implements Command {
-    /**
-     * Option for CSV output.
-     */
-    private static final String OPT = "c";
-    /**
-     * Command line option.
-     */
-    private final transient Option optn;
     /**
      * Output stream for the command.
      */
@@ -55,14 +46,12 @@ public final class CSVCommand implements Command {
         this.format =
             new CSVSentence(Collator.getInstance(Locale.getDefault()));
         this.output = ostream;
-        this.optn = new Option(OPT, false, "output in CSV format");
     }
 
     @Override
-    public boolean canRun(final CommandLine cline) {
-        return cline.getArgList().isEmpty()
-            && cline.getOptions().length == 1
-            && cline.hasOption(OPT);
+    public boolean canRun(final CommandLineArgs cli) {
+        return cli.getOptions().size() == 1
+            && cli.findOption("c").iterator().hasNext();
     }
 
     @Override
@@ -75,11 +64,6 @@ public final class CSVCommand implements Command {
             this.output.append(System.lineSeparator());
             this.output.append(this.format.convert(text.next()));
         }
-    }
-
-    @Override
-    public Option option() {
-        return this.optn;
     }
 
     /**

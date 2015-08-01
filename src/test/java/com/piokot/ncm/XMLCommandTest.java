@@ -3,13 +3,11 @@
  */
 package com.piokot.ncm;
 
+import com.github.piotrkot.cli.CommandLineArgs;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import java.io.ByteArrayInputStream;
 import java.io.PrintWriter;
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Options;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,17 +26,15 @@ public final class XMLCommandTest {
      */
     @Test
     public void runWithArg() throws Exception {
-        final XMLCommand xml = new XMLCommand(
-            new InputStreamCache(
-                new ByteArrayInputStream("hello".getBytes(Charsets.UTF_8))
-            ),
-            new PrintWriter(System.out)
+        Assert.assertTrue(
+            "Cannot run XML",
+            new XMLCommand(
+                new InputStreamCache(
+                    new ByteArrayInputStream("".getBytes(Charsets.UTF_8))
+                ),
+                new PrintWriter(System.out)
+            ).canRun(new CommandLineArgs("-x"))
         );
-        final CommandLine cline = new BasicParser().parse(
-            new Options().addOption(xml.option()),
-            new String[]{"-x"}
-        );
-        Assert.assertTrue("Cannot run XML", xml.canRun(cline));
     }
 
     /**

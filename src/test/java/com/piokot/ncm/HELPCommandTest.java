@@ -3,10 +3,7 @@
  */
 package com.piokot.ncm;
 
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
+import com.github.piotrkot.cli.CommandLineArgs;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,68 +16,39 @@ import org.junit.Test;
  */
 public final class HELPCommandTest {
     /**
-     * Can run if one argument given and an other option.
+     * Can run if one help option given.
      *
      * @throws Exception If fails
      */
     @Test
-    public void testCanRunWithOneArgOneOption() throws Exception {
-        final HELPCommand help = new HELPCommand();
-        final Option ocase = new Option("o", false, "o case");
-        final CommandLine cline = new BasicParser().parse(
-            new Options().addOption(ocase), new String[]{"asd", "-o"}
-        );
+    public void testCanRunWithOneOption() throws Exception {
         Assert.assertTrue(
-            "not called with one arg and option",
-            help.canRun(cline)
+            "not called with help option",
+            new HELPCommand().canRun(new CommandLineArgs("-h"))
         );
     }
     /**
-     * Can run if for two options given and no args.
+     * Can run if for two options given.
      *
      * @throws Exception If fails
      */
     @Test
-    public void testCanRunWithTwoOptionsNoArgs() throws Exception {
-        final HELPCommand help = new HELPCommand();
-        final Option ccase = new Option("c", false, "c case");
-        final Option xcase = new Option("x", false, "x case");
-        final CommandLine cline = new BasicParser().parse(
-            new Options().addOption(ccase).addOption(xcase),
-            new String[]{"-c", "-x"}
-        );
+    public void testCanRunWithTwoOptions() throws Exception {
         Assert.assertTrue(
             "not called with two options and no args",
-            help.canRun(cline)
+            new HELPCommand().canRun(new CommandLineArgs("-d", "-s"))
         );
     }
     /**
-     * Can run if help option given.
+     * Can run if no option given.
      *
      * @throws Exception If fails
      */
     @Test
-    public void testCanRunWithHelpOption() throws Exception {
-        final HELPCommand help = new HELPCommand();
-        final CommandLine cline = new BasicParser().parse(
-            new Options().addOption(help.option()), new String[]{"-h"}
-        );
-        Assert.assertTrue("not called with help option", help.canRun(cline));
-    }
-    /**
-     * Can run if no options nor arguments given.
-     *
-     * @throws Exception If fails
-     */
-    @Test
-    public void testCanRunWithNoOptionsNorArgs() throws Exception {
-        final HELPCommand help = new HELPCommand();
-        final CommandLine cline = new BasicParser().parse(
-            new Options(), new String[]{""}
-        );
+    public void testCanRunWithNoOption() throws Exception {
         Assert.assertTrue(
-            "not called with no options nor arguments",
-            help.canRun(cline)
+            "not called with no option",
+            new HELPCommand().canRun(new CommandLineArgs())
         );
     }
 }
