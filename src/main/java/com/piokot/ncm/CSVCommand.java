@@ -74,14 +74,9 @@ public final class CSVCommand implements Command {
      * @return Header in the CSV format.
      */
     public String header() {
-        final SentenceFormat count = new SentenceFormat() {
-            @Override
-            public String convert(final Sentence sentence) {
-                return String.valueOf(
-                    Lists.newArrayList(sentence.words()).size()
-                );
-            }
-        };
+        final SentenceFormat count = sentence -> String.valueOf(
+            Lists.newArrayList(sentence.words()).size()
+        );
         final Iterator<Sentence> text = new Text(this.icache.reader());
         int max = 0;
         while (text.hasNext()) {
