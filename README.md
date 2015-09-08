@@ -17,7 +17,7 @@ When running inappropriately help message is displayed.
 should rather deal with streams instead of strings.
 * As the application reads from stdin, writes to stdout, and have
 configuration options, it was guessed adding CLI is a good fit.
-Here I chose [Apache Commons CLI](https://commons.apache.org/proper/commons-cli/).
+Here I chose my own [Simple CLI](https://github.com/piotrkot/simple-cli).
 * Logging is realized with Slf4j SimpleLogger. By default log
 messages are sent to the console (`System.err`). It can be altered
 with `org.slf4j.simpleLogger.logFile` system property.
